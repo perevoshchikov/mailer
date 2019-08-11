@@ -132,9 +132,9 @@ class Mailer implements MailerInterface
     /**
      * @param TransportInterface $transport
      *
-     * @return TransportInterface
+     * @return EventDispatchTransport
      */
-    protected function resolveTransport(TransportInterface $transport): TransportInterface
+    protected function resolveTransport(TransportInterface $transport): EventDispatchTransport
     {
         return $transport instanceof EventDispatchTransport
             ? $transport
@@ -144,9 +144,9 @@ class Mailer implements MailerInterface
     /**
      * @param StorageInterface $storage
      *
-     * @return StorageInterface
+     * @return EventDispatchStorage
      */
-    protected function resolveStorage(StorageInterface $storage): StorageInterface
+    protected function resolveStorage(StorageInterface $storage): EventDispatchStorage
     {
         return $storage instanceof EventDispatchStorage
             ? $storage
