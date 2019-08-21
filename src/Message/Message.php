@@ -80,6 +80,11 @@ class Message
     protected $priority;
 
     /**
+     * @var string[]
+     */
+    protected $headers = [];
+
+    /**
      * @param string $id
      */
     public function __construct(string $id)
@@ -113,9 +118,10 @@ class Message
             ->setAllowedTypes('return_path', ['null', 'string', $address])
             ->setAllowedTypes('content_type', ['null', 'string'])
             ->setAllowedTypes('charset', ['null', 'string'])
+            ->setAllowedTypes('headers', ['null', 'string', 'string[]'])
             ->setAllowedTypes('attachments', ['null', 'string', $file, 'string[]', $file . '[]']);
 
-        foreach (['from', 'to', 'cc', 'bcc', 'reply_to', 'attachments'] as $option) {
+        foreach (['from', 'to', 'cc', 'bcc', 'reply_to', 'attachments', 'headers'] as $option) {
             $resolver->setNormalizer($option, function ($options, $value) {
                 return \is_array($value) && empty($value) ? null : $value;
             });
@@ -140,6 +146,7 @@ class Message
             ->setCharset($data['charset'])
             ->setContentType($data['content_type'])
             ->setPriority($data['priority'])
+            ->setHeaders($data['headers'])
             ->setAttachments($data['attachments']);
 
         return $this;
@@ -390,7 +397,7 @@ class Message
     }
 
     /**
-     * @param File[]|string[]|File|string ...$attachments
+     * @param File[]|string[]|File|string|null ...$attachments
      *
      * @return Message
      * @throws Exception
@@ -403,7 +410,7 @@ class Message
     }
 
     /**
-     * @param File[]|string[]|File|string|null ...$attachments
+     * @param File[]|string[]|File|string ...$attachments
      *
      * @return Message
      * @throws Exception
@@ -478,6 +485,42 @@ class Message
     }
 
     /**
+     * @return string[]
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param string|string[]|null ...$headers
+     *
+     * @return Message
+     */
+    public function setHeaders(...$headers): self
+    {
+        $this->headers = [];
+
+        return $this->addHeaders(...$headers);
+    }
+
+    /**
+     * @param string|string[] ...$headers
+     *
+     * @return Message
+     */
+    public function addHeaders(...$headers): self
+    {
+        $prepared = \array_filter($this->prepareArray($headers), function ($header) {
+            return \is_string($header);
+        });
+
+        $this->headers = \array_merge($this->headers, $prepared);
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -496,6 +539,7 @@ class Message
             'content_type' => $this->getContentType(),
             'charset'      => $this->getCharset(),
             'priority'     => $this->getPriority(),
+            'headers'      => $this->getHeaders(),
         ];
     }
 

@@ -198,6 +198,36 @@ class MessageTest extends TestCase
         ];
     }
 
+    public function headersProvider(): array
+    {
+        return [
+            [
+                ['Header: Value'], // single string
+                ['Header: Value'],
+            ],
+            [
+                ['Header1: Value1', 'Header2: Value2'], // many strings
+                ['Header1: Value1', 'Header2: Value2'],
+            ],
+            [
+                [['Header: Value']], // array of string
+                ['Header: Value'],
+            ],
+            [
+                [],
+                [],
+            ],
+            [
+                [1], // not string
+                [],
+            ],
+            [
+                [null],
+                [],
+            ]
+        ];
+    }
+
     /**
      * @dataProvider methodsProvider
      *
@@ -327,6 +357,37 @@ class MessageTest extends TestCase
         $this->message->addAttachments('not_file');
     }
 
+    /**
+     * @dataProvider headersProvider
+     *
+     * @param $headers
+     * @param $expected
+     */
+    public function testSetHeaders(array $headers, array $expected)
+    {
+        \call_user_func_array([$this->message, 'setHeaders'], $headers);
+
+        $this->assertEquals($expected, $this->message->getHeaders());
+    }
+
+    /**
+     * @dataProvider headersProvider
+     *
+     * @param $headers
+     * @param $expected
+     */
+    public function testAddHeaders(array $headers, array $expected)
+    {
+        $default = 'Default: Value';
+        array_unshift($expected, $default);
+
+        $this->message->setHeaders($default);
+
+        \call_user_func_array([$this->message, 'addHeaders'], $headers);
+
+        $this->assertEquals($expected, $this->message->getHeaders());
+    }
+
     public function testToArray()
     {
         $data =  [
@@ -343,6 +404,7 @@ class MessageTest extends TestCase
             'content_type' => 'text/html',
             'charset'      => 'utf-8',
             'priority'     => 1,
+            'headers'      => ['Header: Value'],
         ];
 
         $this->message
@@ -358,6 +420,7 @@ class MessageTest extends TestCase
             ->setCharset($data['charset'])
             ->setContentType($data['content_type'])
             ->setPriority($data['priority'])
+            ->setHeaders($data['headers'])
             ->setAttachments($data['attachments']);
 
         $this->assertEquals($data, $this->message->toArray());
@@ -399,6 +462,10 @@ class MessageTest extends TestCase
             ['attachments', [$f()], [$f()]],
             ['attachments', __FILE__, [$f()]],
             ['attachments', [__FILE__], [$f()]],
+            ['headers', 'Header: Value', ['Header: Value']],
+            ['headers', ['Header: Value'], ['Header: Value']],
+            ['headers', [], []],
+            ['headers', null, []],
         ];
 
         foreach (['from', 'to', 'cc', 'bcc', 'reply_to'] as $option) {
