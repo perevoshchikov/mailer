@@ -417,7 +417,7 @@ class Message
     }
 
     /**
-     * @param File[]|string[]|File|string ...$attachments
+     * @param File[]|string[]|File|string|null ...$attachments
      *
      * @return Message
      * @throws Exception
@@ -512,7 +512,7 @@ class Message
     }
 
     /**
-     * @param string|string[] ...$headers
+     * @param string|string[]|null ...$headers
      *
      * @return Message
      */
