@@ -156,6 +156,9 @@ class MessageTest extends TestCase
         ];
     }
 
+    /**
+     * @return array
+     */
     public function attachmentsProvider(): array
     {
         $a = function (string $file) {
@@ -198,6 +201,9 @@ class MessageTest extends TestCase
         ];
     }
 
+    /**
+     * @return array
+     */
     public function headersProvider(): array
     {
         return [
@@ -223,6 +229,27 @@ class MessageTest extends TestCase
             ],
             [
                 [null],
+                [],
+            ]
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function attributesProvider(): array
+    {
+        return [
+            [
+                ['foo' => 'bar'],
+                ['foo' => 'bar'],
+            ],
+            [
+                [],
+                [],
+            ],
+            [
+                null,
                 [],
             ]
         ];
@@ -388,6 +415,43 @@ class MessageTest extends TestCase
         $this->assertEquals($expected, $this->message->getHeaders());
     }
 
+    /**
+     * @dataProvider attributesProvider
+     *
+     * @param $attributes
+     * @param $expected
+     */
+    public function testSetAttributes($attributes, array $expected)
+    {
+        \call_user_func([$this->message, 'setAttributes'], $attributes);
+
+        $this->assertEquals($expected, $this->message->getAttributes());
+    }
+
+    /**
+     * @dataProvider attributesProvider
+     *
+     * @param $attributes
+     * @param $expected
+     */
+    public function testAddAttributes($attributes, array $expected)
+    {
+        if ($attributes === null) {
+            $this->assertTrue(true);
+            return;
+        }
+
+        $expected['default'] = 'value';
+
+        $this->message->setAttributes([
+            'default' => 'value',
+        ]);
+
+        \call_user_func([$this->message, 'addAttributes'], $attributes);
+
+        $this->assertEquals($expected, $this->message->getAttributes());
+    }
+
     public function testToArray()
     {
         $data =  [
@@ -405,6 +469,7 @@ class MessageTest extends TestCase
             'charset'      => 'utf-8',
             'priority'     => 1,
             'headers'      => ['Header: Value'],
+            'attributes'   => ['foo' => 'bar'],
         ];
 
         $this->message
@@ -421,6 +486,7 @@ class MessageTest extends TestCase
             ->setContentType($data['content_type'])
             ->setPriority($data['priority'])
             ->setHeaders($data['headers'])
+            ->setAttributes($data['attributes'])
             ->setAttachments($data['attachments']);
 
         $this->assertEquals($data, $this->message->toArray());
@@ -466,6 +532,9 @@ class MessageTest extends TestCase
             ['headers', ['Header: Value'], ['Header: Value']],
             ['headers', [], []],
             ['headers', null, []],
+            ['attributes', null, []],
+            ['attributes', [], []],
+            ['attributes', ['key' => 'value'], ['key' => 'value']],
         ];
 
         foreach (['from', 'to', 'cc', 'bcc', 'reply_to'] as $option) {
@@ -509,7 +578,7 @@ class MessageTest extends TestCase
     public function invalidMessageDataProvider(): array
     {
         $notEmail = 'not_email';
-        $notString = new \DateTime();
+        $notString = $notArray = new \DateTime();
 
         return [
             ['from', $notString],
@@ -533,6 +602,10 @@ class MessageTest extends TestCase
             ['return_path', $notString],
             ['attachments', $notString],
             ['attachments', $notEmail],
+            ['attachments', $notEmail],
+            ['headers',     $notArray],
+            ['headers',     $notString],
+            ['attributes',  $notArray],
         ];
     }
 

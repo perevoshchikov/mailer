@@ -85,6 +85,11 @@ class Message
     protected $headers = [];
 
     /**
+     * @var array
+     */
+    protected $attributes = [];
+
+    /**
      * @param string $id
      */
     public function __construct(string $id)
@@ -119,6 +124,7 @@ class Message
             ->setAllowedTypes('content_type', ['null', 'string'])
             ->setAllowedTypes('charset', ['null', 'string'])
             ->setAllowedTypes('headers', ['null', 'string', 'string[]'])
+            ->setAllowedTypes('attributes', ['null', 'array'])
             ->setAllowedTypes('attachments', ['null', 'string', $file, 'string[]', $file . '[]']);
 
         foreach (['from', 'to', 'cc', 'bcc', 'reply_to', 'attachments', 'headers'] as $option) {
@@ -147,6 +153,7 @@ class Message
             ->setContentType($data['content_type'])
             ->setPriority($data['priority'])
             ->setHeaders($data['headers'])
+            ->setAttributes($data['attributes'])
             ->setAttachments($data['attachments']);
 
         return $this;
@@ -523,6 +530,38 @@ class Message
     /**
      * @return array
      */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param array|null $attributes
+     *
+     * @return Message
+     */
+    public function setAttributes(?array $attributes): self
+    {
+        $this->attributes = $attributes ?? [];
+
+        return $this;
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return Message
+     */
+    public function addAttributes(array $attributes): self
+    {
+        $this->attributes = \array_merge($this->attributes, $attributes);
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return [
@@ -540,6 +579,7 @@ class Message
             'charset'      => $this->getCharset(),
             'priority'     => $this->getPriority(),
             'headers'      => $this->getHeaders(),
+            'attributes'   => $this->getAttributes(),
         ];
     }
 
