@@ -5,12 +5,6 @@
 [![Build Status][ico-travis]][link-travis]
 [![Coverage Status][ico-coverage]][link-coverage]
 
-
-## After create repository
-Don't forget to connect the repository to the services:
-* [Travis](https://travis-ci.org/profile/perevoshchikov)
-* [Coveralls](https://coveralls.io/repos/new)
-
 ## Install
 
 ``` bash
@@ -26,10 +20,6 @@ $ composer test
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security
-
-If you discover any security related issues, please email anper3.5@gmail.com instead of using the issue tracker.
 
 ## License
 
