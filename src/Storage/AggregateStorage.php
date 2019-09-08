@@ -77,7 +77,7 @@ class AggregateStorage implements StorageInterface
             }
         }
 
-        throw new NotFoundException($id);
+        throw new NotFoundException();
     }
 
     /**

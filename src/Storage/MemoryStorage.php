@@ -28,7 +28,7 @@ class MemoryStorage implements StorageInterface
             return (array) $this->messages[$id];
         }
 
-        throw new NotFoundException($id);
+        throw new NotFoundException();
     }
 
     /**
