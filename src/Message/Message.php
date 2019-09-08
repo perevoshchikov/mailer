@@ -100,7 +100,7 @@ class Message
     /**
      * @param array $data
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function fill(array $data): self
@@ -178,7 +178,7 @@ class Message
     /**
      * @param string|null $subject
      *
-     * @return Message
+     * @return static
      */
     public function setSubject(?string $subject): self
     {
@@ -198,7 +198,7 @@ class Message
     /**
      * @param string|null $body
      *
-     * @return Message
+     * @return static
      */
     public function setBody(?string $body): self
     {
@@ -218,7 +218,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function setFrom(...$addresses): self
@@ -229,7 +229,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function addFrom(...$addresses): self
@@ -248,7 +248,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function setTo(...$addresses): self
@@ -259,7 +259,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function addTo(...$addresses): self
@@ -278,7 +278,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function setCc(...$addresses): self
@@ -289,7 +289,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function addCc(...$addresses): self
@@ -308,7 +308,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function setBcc(...$addresses): self
@@ -319,7 +319,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function addBcc(...$addresses): self
@@ -338,7 +338,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function setReplyTo(...$addresses): self
@@ -349,7 +349,7 @@ class Message
     /**
      * @param Address[]|string[]|Address|string|null ...$addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function addReplyTo(...$addresses): self
@@ -368,7 +368,7 @@ class Message
     /**
      * @param Address|string|null $address
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function setSender($address): self
@@ -387,7 +387,7 @@ class Message
     /**
      * @param Address|string|null $address
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function setReturnPath($address): self
@@ -406,7 +406,7 @@ class Message
     /**
      * @param File[]|string[]|File|string|null ...$attachments
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function setAttachments(...$attachments): self
@@ -419,7 +419,7 @@ class Message
     /**
      * @param File[]|string[]|File|string|null ...$attachments
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     public function addAttachments(...$attachments): self
@@ -442,7 +442,7 @@ class Message
     /**
      * @param string|null $contentType
      *
-     * @return Message
+     * @return static
      */
     public function setContentType(?string $contentType): self
     {
@@ -462,7 +462,7 @@ class Message
     /**
      * @param string|null $charset
      *
-     * @return Message
+     * @return static
      */
     public function setCharset(?string $charset): self
     {
@@ -482,7 +482,7 @@ class Message
     /**
      * @param int|null $priority
      *
-     * @return Message
+     * @return static
      */
     public function setPriority(?int $priority): self
     {
@@ -502,7 +502,7 @@ class Message
     /**
      * @param string|string[]|null ...$headers
      *
-     * @return Message
+     * @return static
      */
     public function setHeaders(...$headers): self
     {
@@ -514,7 +514,7 @@ class Message
     /**
      * @param string|string[]|null ...$headers
      *
-     * @return Message
+     * @return static
      */
     public function addHeaders(...$headers): self
     {
@@ -538,7 +538,7 @@ class Message
     /**
      * @param array|null $attributes
      *
-     * @return Message
+     * @return static
      */
     public function setAttributes(?array $attributes): self
     {
@@ -550,7 +550,7 @@ class Message
     /**
      * @param array $attributes
      *
-     * @return Message
+     * @return static
      */
     public function addAttributes(array $attributes): self
     {
@@ -587,7 +587,7 @@ class Message
      * @param array $prop
      * @param array $addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     protected function setAddressList(array &$prop, array $addresses): self
@@ -601,7 +601,7 @@ class Message
      * @param array $prop
      * @param array $addresses
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     protected function addAddressList(array &$prop, array $addresses): self
@@ -637,7 +637,7 @@ class Message
      * @param mixed $prop
      * @param Address|string|null $address
      *
-     * @return Message
+     * @return static
      * @throws Exception
      */
     protected function setAddress(&$prop, $address): self
