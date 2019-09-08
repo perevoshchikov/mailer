@@ -5,10 +5,96 @@
 [![Build Status][ico-travis]][link-travis]
 [![Coverage Status][ico-coverage]][link-coverage]
 
+A simple mailer, allows you to create and send emails by key. Messages can be stored in different storages. Third-party mailers act as transport.
+
 ## Install
 
 ``` bash
 $ composer require anper/mailer
+```
+
+## Usage
+```php
+use Anper\Mailer\Transport\NullTransport;
+use Anper\Mailer\Storage\MemoryStorage
+use Anper\Mailer\Mailer;
+
+$storage = new MemoryStorage([
+    'hello' => [
+        'subject' => 'Hello',
+        'body'    => 'Hello World!',
+        'from'    => 'from@example.com',
+        'to'      => 'user@example.com',
+    ],
+]);
+
+$mailer = new Mailer(new NullTransport(), $storage);
+
+$mailer->send('hello');
+
+// or you can modify message
+
+$mailer->get('hello')
+    ->addTo('foo@example.com')
+    ->send();
+```
+
+## Supports
+* subject
+* body
+* from
+* to
+* cc
+* bcc
+* reply_to
+* sender
+* return_path
+* attachments
+* headers
+* priority
+* content_type
+* charset
+
+## Packages
+* Storages
+    * [anper/twig-storage](https://github.com/perevoshchikov/twig-storage)
+    * [anper/php-storage](https://github.com/perevoshchikov/php-storage)
+    * [anper/yaml-storage](https://github.com/perevoshchikov/yaml-storage)
+* Transports
+    * [anper/swiftmailer-transport](https://github.com/perevoshchikov/swiftmailer-transport)
+
+## Context
+You can pass context to the storage, for example, variables for the template in twig storage.
+
+```php
+$context = [
+    'foo' => 'bar'
+];
+
+$mailer->send('hello', $context);
+
+// or
+
+$message = $mailer->get('hello', $context);
+```
+
+## Defaults
+```php
+use Anper\Mailer\Subscriber\Defaults;
+
+$defaultMessageParameters = [
+    'from' => 'admin@example.com',
+    'content_type' => 'text/plain',
+];
+
+$defaultContext = [
+    'teem' => 'Example Team',
+];
+
+$subscriber = new Defaults($defaultMessageParameters, $defaultContext);
+
+$mailer->getDispatcher()
+    ->addSubscriber($subscriber);
 ```
 
 ## Test

@@ -1,7 +1,7 @@
 {
     "name": "anper/mailer",
     "type": "library",
-    "description": "",
+    "description": "A simple mailer, allows you to create and send emails by key.",
     "keywords": [
         "mailer"
     ],
